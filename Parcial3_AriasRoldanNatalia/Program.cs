@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Parcial3_AriasRoldanNatalia.DAL;
+
 namespace Parcial3_AriasRoldanNatalia
 {
     public class Program
@@ -8,6 +11,9 @@ namespace Parcial3_AriasRoldanNatalia
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<DataBaseContext>(
+            o => o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+            );
 
             var app = builder.Build();
 
