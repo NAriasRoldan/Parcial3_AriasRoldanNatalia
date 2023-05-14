@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,21 +19,25 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
     {
         private readonly DataBaseContext _context;
         private readonly IDropDownListHelper _ddlHelper;
-        public VehiclesController(DataBaseContext context, IDropDownListHelper dropDownListHelper)
+        private readonly IUserHelper _userHelper;
+        public VehiclesController(DataBaseContext context, IDropDownListHelper dropDownListHelper, IUserHelper userHelper)
         {
             _context = context;
             _ddlHelper = dropDownListHelper;
+            _userHelper = userHelper;
         }
 
         // GET: Vehicles
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return _context.VehiculesDetails != null ?
-                        View(await _context.VehiculesDetails.Include(c => c.Vehicles).Include(c=>c.Vehicles.Services).ToListAsync()) :
+                        View(await _context.VehiculesDetails.Include(c => c.Vehicles).Include(c=>c.Vehicles.Services).Include(c => c.Vehicles.Owner).ToListAsync()) :
                         Problem("Entity set 'DataBaseContext.Vehicules'  is null.");
         }
 
         // GET: Vehicles/Details/5
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Details()
         {
             if (_context.Vehicules == null)
@@ -62,6 +68,7 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
         }
 
         // GET: Vehicles/Create
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create()
         {
             VehicleServiceViewModel vehicleServiceViewModel = new()
@@ -69,6 +76,7 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
                 Id = new Guid(),
                 CreatedDate = DateTime.Now,
                 listServices = await _ddlHelper.GetDDLServicesAsync(),
+                Owner = await _userHelper.GetUserAsync(User.Identity.Name),
             };
             return View(vehicleServiceViewModel);
         }
@@ -78,16 +86,17 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create(VehicleServiceViewModel vehicleServiceViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
                 Vehicles vehicle = new()
                 {
                     Id = new Guid(),
                     CreatedDate = DateTime.Now,
                     NumberPlate = vehicleServiceViewModel.NumberPlate,
-                    Owner = vehicleServiceViewModel.Owner,
+                    Owner = await _userHelper.GetUserAsync(User.Identity.Name),
                     Services = await _context.Servicies.FirstOrDefaultAsync(m => m.Id == vehicleServiceViewModel.ServiceId),
                 };
                 VehicleDetails vehicleDetails = new()
@@ -101,10 +110,15 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Details));
             }
-            return RedirectToAction(nameof(Create));
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+            
         }
 
         // GET: Vehicles/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.VehiculesDetails == null)
@@ -134,6 +148,7 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid id, EditDetailsVehicleView editDetailsVehicleView)
         {
             if (id != editDetailsVehicleView.Id)
