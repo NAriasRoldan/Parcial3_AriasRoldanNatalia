@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Parcial3_AriasRoldanNatalia.DAL.Entities;
+using Parcial3_AriasRoldanNatalia.Models;
 
 namespace Parcial3_AriasRoldanNatalia.Helpers
 {
@@ -15,7 +16,7 @@ namespace Parcial3_AriasRoldanNatalia.Helpers
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
 
-       // Task<SignInResult> LoginAsync(LoginViewModel loginViewModel);
+       Task<SignInResult> LoginAsync(LoginViewModel loginViewModel);
 
         Task LogoutAsync();
     }

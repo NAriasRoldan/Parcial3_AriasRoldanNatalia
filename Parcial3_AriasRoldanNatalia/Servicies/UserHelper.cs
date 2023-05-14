@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Parcial3_AriasRoldanNatalia.DAL;
 using Parcial3_AriasRoldanNatalia.DAL.Entities;
 using Parcial3_AriasRoldanNatalia.Helpers;
+using Parcial3_AriasRoldanNatalia.Models;
 
 namespace Parcial3_AriasRoldanNatalia.Servicies
 {
@@ -46,7 +47,7 @@ namespace Parcial3_AriasRoldanNatalia.Servicies
         public async Task<User> GetUserAsync(string email)
         {
             return await _context.Users
-                .FindAsync(email);
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
@@ -54,10 +55,10 @@ namespace Parcial3_AriasRoldanNatalia.Servicies
             return await _userManager.IsInRoleAsync(user, roleName);
         }
 
-       /* public async Task<SignInResult> LoginAsync(LoginViewModel loginViewModel)
+        public async Task<SignInResult> LoginAsync(LoginViewModel loginViewModel)
         {
             return await _signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, loginViewModel.RememberMe, false);
-        }*/
+        }
 
         public async Task LogoutAsync()
         {
