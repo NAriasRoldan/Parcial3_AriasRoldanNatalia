@@ -2,7 +2,7 @@
 
 namespace Parcial3_AriasRoldanNatalia.Models
 {
-    public class EstateServiceView
+    public class EstateServiceViewModel
     {
         [Display(Name = "Placa")]
         public string VehiclePlateumber { get; set; }

@@ -45,11 +45,11 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
                 return NotFound();
             }
 
-            ICollection<EstateServiceView> estateServiceViews = new List<EstateServiceView>();
+            ICollection<EstateServiceViewModel> estateServiceViews = new List<EstateServiceViewModel>();
 
             foreach (var item in VehiculesDetails)
             {
-                estateServiceViews.Add(new EstateServiceView {
+                estateServiceViews.Add(new EstateServiceViewModel {
                     NameService = item.Vehicles.Services.Name,
                     CreateDate = item.CreatedDate,
                     DeliveryDate = item.DeliveryDate,
@@ -68,7 +68,6 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
             {
                 Id = new Guid(),
                 CreatedDate = DateTime.Now,
-                Owner = "Natalia",
                 listServices = await _ddlHelper.GetDDLServicesAsync(),
             };
             return View(vehicleServiceViewModel);
