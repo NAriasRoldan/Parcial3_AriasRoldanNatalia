@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Parcial3_AriasRoldanNatalia.DAL;
 using Parcial3_AriasRoldanNatalia.Helpers;
-using Parcial3_AriasRoldanNatalia.Services;
+using Parcial3_AriasRoldanNatalia.Servicies;
+
 
 namespace Parcial3_AriasRoldanNatalia
 {
