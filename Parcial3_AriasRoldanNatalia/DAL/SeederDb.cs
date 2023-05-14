@@ -23,48 +23,50 @@ namespace Parcial3_AriasRoldanNatalia.DAL
         private async Task PopulateServices()
         {
             if (!_context.Servicies.Any())
-             _context.Servicies.Add(new Entities.Services
+            {
+                _context.Servicies.Add(new Entities.Services
                 {
                     Id = new Guid(),
                     CreatedDate = DateTime.Now,
-                    Name = "Lavada Simplre",
+                    Name = "Lavada Simple",
                     Price = 25000,
                 });
-            _context.Servicies.Add(new Entities.Services
-            {
-                Id = new Guid(),
-                CreatedDate = DateTime.Now,
-                Name = "Lavada + Polishada",
-                Price = 50000,
-            });
-            _context.Servicies.Add(new Entities.Services
-            {
-                Id = new Guid(),
-                CreatedDate = DateTime.Now,
-                Name = "Lavada + Aspirada de Cojinería",
-                Price = 30000,
-            });
-            _context.Servicies.Add(new Entities.Services
-            {
-                Id = new Guid(),
-                CreatedDate = DateTime.Now,
-                Name = "Lavada full",
-                Price = 65000,
-            });
-            _context.Servicies.Add(new Entities.Services
-            {
-                Id = new Guid(),
-                CreatedDate = DateTime.Now,
-                Name = "Lavada en seco del Motor",
-                Price = 80000,
-            });
-            _context.Servicies.Add(new Entities.Services
-            {
-                Id = new Guid(),
-                CreatedDate = DateTime.Now,
-                Name = "Lavada chasis",
-                Price = 90000,
-            });
+                _context.Servicies.Add(new Entities.Services
+                {
+                    Id = new Guid(),
+                    CreatedDate = DateTime.Now,
+                    Name = "Lavada + Polishada",
+                    Price = 50000,
+                });
+                _context.Servicies.Add(new Entities.Services
+                {
+                    Id = new Guid(),
+                    CreatedDate = DateTime.Now,
+                    Name = "Lavada + Aspirada de Cojinería",
+                    Price = 30000,
+                });
+                _context.Servicies.Add(new Entities.Services
+                {
+                    Id = new Guid(),
+                    CreatedDate = DateTime.Now,
+                    Name = "Lavada full",
+                    Price = 65000,
+                });
+                _context.Servicies.Add(new Entities.Services
+                {
+                    Id = new Guid(),
+                    CreatedDate = DateTime.Now,
+                    Name = "Lavada en seco del Motor",
+                    Price = 80000,
+                });
+                _context.Servicies.Add(new Entities.Services
+                {
+                    Id = new Guid(),
+                    CreatedDate = DateTime.Now,
+                    Name = "Lavada chasis",
+                    Price = 90000,
+                });
+            }
         }
     }
 }
