@@ -170,43 +170,6 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Vehicles/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null || _context.Vehicules == null)
-            {
-                return NotFound();
-            }
-
-            var vehicles = await _context.Vehicules
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (vehicles == null)
-            {
-                return NotFound();
-            }
-
-            return View(vehicles);
-        }
-
-        // POST: Vehicles/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            if (_context.Vehicules == null)
-            {
-                return Problem("Entity set 'DataBaseContext.Vehicules'  is null.");
-            }
-            var vehicles = await _context.Vehicules.FindAsync(id);
-            if (vehicles != null)
-            {
-                _context.Vehicules.Remove(vehicles);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool VehiclesExists(Guid id)
         {
             return (_context.Vehicules?.Any(e => e.Id == id)).GetValueOrDefault();
