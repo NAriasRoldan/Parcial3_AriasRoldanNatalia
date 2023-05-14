@@ -18,7 +18,6 @@ namespace Parcial3_AriasRoldanNatalia.DAL
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Services>().HasIndex(c => c.Name).IsUnique();
-            modelBuilder.Entity<Vehicles>().HasIndex(c => c.NumberPlate).IsUnique();
         }
     }
 
