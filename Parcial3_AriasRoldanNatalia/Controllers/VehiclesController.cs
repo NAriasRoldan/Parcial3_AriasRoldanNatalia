@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Parcial3_AriasRoldanNatalia.DAL;
 using Parcial3_AriasRoldanNatalia.DAL.Entities;
 using Parcial3_AriasRoldanNatalia.Helpers;
@@ -31,21 +32,33 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
         }
 
         // GET: Vehicles/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details()
         {
-            if (id == null || _context.Vehicules == null)
+            if (_context.Vehicules == null)
             {
                 return NotFound();
             }
 
-            var vehicles = await _context.Vehicules
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (vehicles == null)
+            ICollection< VehicleDetails> VehiculesDetails = await _context.VehiculesDetails.Include(c => c.Vehicles).Include(c=> c.Vehicles.Services).ToListAsync();
+            if (VehiculesDetails.IsNullOrEmpty())
             {
                 return NotFound();
             }
 
-            return View(vehicles);
+            ICollection<EstateServiceView> estateServiceViews = new List<EstateServiceView>();
+
+            foreach (var item in VehiculesDetails)
+            {
+                estateServiceViews.Add(new EstateServiceView {
+                    NameService = item.Vehicles.Services.Name,
+                    CreateDate = item.CreatedDate,
+                    DeliveryDate = item.DeliveryDate,
+                    PriceService = item.Vehicles.Services.Price,
+                    VehiclePlateumber = item.Vehicles.NumberPlate,
+                });   
+            }
+
+            return View(estateServiceViews);
         }
 
         // GET: Vehicles/Create

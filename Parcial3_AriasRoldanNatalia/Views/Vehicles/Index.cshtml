@@ -18,6 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Vehicles.NumberPlate)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryDate)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -25,13 +28,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                    @Html.DisplayFor(modelItem => item.DeliveryDate)
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
             <td>
                     @Html.DisplayFor(modelItem => item.Vehicles.Owner)
             </td>
             <td>
                     @Html.DisplayFor(modelItem => item.Vehicles.NumberPlate)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryDate)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
