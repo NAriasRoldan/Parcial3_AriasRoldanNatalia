@@ -11,6 +11,6 @@ namespace Parcial3_AriasRoldanNatalia.DAL.Entities
         public string NumberPlate { get; set; }
 
         [Display (Name = "Servicio")]
-        public Services Services { get; set; } 
+        public Services? Services { get; set; } 
     }
 }
