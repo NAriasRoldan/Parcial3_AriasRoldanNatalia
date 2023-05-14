@@ -35,6 +35,11 @@ namespace Parcial3_AriasRoldanNatalia
                 io.Password.RequiredLength = 6;
             }).AddEntityFrameworkStores<DataBaseContext>();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Unauthorized";
+                options.AccessDeniedPath = "/Account/Unauthorized";
+            });
 
             var app = builder.Build();
 
@@ -66,6 +71,8 @@ namespace Parcial3_AriasRoldanNatalia
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.MapControllerRoute(
                 name: "default",
