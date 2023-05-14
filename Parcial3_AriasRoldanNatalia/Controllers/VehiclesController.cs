@@ -27,7 +27,7 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
         public async Task<IActionResult> Index()
         {
             return _context.VehiculesDetails != null ?
-                        View(await _context.VehiculesDetails.Include(c => c.Vehicles).ToListAsync()) :
+                        View(await _context.VehiculesDetails.Include(c => c.Vehicles).Include(c=>c.Vehicles.Services).ToListAsync()) :
                         Problem("Entity set 'DataBaseContext.Vehicules'  is null.");
         }
 
@@ -100,9 +100,9 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
                 _context.Add(vehicle);
                 _context.Add(vehicleDetails);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details));
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Create));
         }
 
         // GET: Vehicles/Edit/5

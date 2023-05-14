@@ -19,6 +19,9 @@
                 @Html.DisplayNameFor(model => model.Vehicles.NumberPlate)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Vehicles.Services.Name)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.DeliveryDate)
             </th>
             <th></th>
@@ -36,11 +39,14 @@
             <td>
                     @Html.DisplayFor(modelItem => item.Vehicles.NumberPlate)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vehicles.Services.Name)
+                </td>
             <td>
                     @Html.DisplayFor(modelItem => item.DeliveryDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
             </td>
         </tr>
 }
