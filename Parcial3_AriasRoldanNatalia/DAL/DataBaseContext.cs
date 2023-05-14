@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Parcial3_AriasRoldanNatalia.DAL.Entities;
 
 namespace Parcial3_AriasRoldanNatalia.DAL
 {
 
-    public class DataBaseContext : DbContext
+    public class DataBaseContext : IdentityDbContext<User>
     {
         public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
         {
