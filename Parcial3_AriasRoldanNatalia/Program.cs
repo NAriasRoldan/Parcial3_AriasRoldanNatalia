@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Parcial3_AriasRoldanNatalia.DAL;
+using Parcial3_AriasRoldanNatalia.Helpers;
+using Parcial3_AriasRoldanNatalia.Services;
 
 namespace Parcial3_AriasRoldanNatalia
 {
@@ -15,6 +17,7 @@ namespace Parcial3_AriasRoldanNatalia
             o => o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
             builder.Services.AddTransient<SeederDb>();
+            builder.Services.AddScoped<IDropDownListHelper, DropDownListHelper>();
             var app = builder.Build();
 
             SeederData();
