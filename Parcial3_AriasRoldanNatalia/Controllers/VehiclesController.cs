@@ -25,9 +25,9 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-              return _context.Vehicules != null ? 
-                          View(await _context.Vehicules.ToListAsync()) :
-                          Problem("Entity set 'DataBaseContext.Vehicules'  is null.");
+            return _context.VehiculesDetails != null ?
+                        View(await _context.VehiculesDetails.Include(c => c.Vehicles).ToListAsync()) :
+                        Problem("Entity set 'DataBaseContext.Vehicules'  is null.");
         }
 
         // GET: Vehicles/Details/5
@@ -70,7 +70,8 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
         {
             if (ModelState.IsValid)
             {
-                Vehicles vehicle = new() {
+                Vehicles vehicle = new()
+                {
                     Id = new Guid(),
                     CreatedDate = DateTime.Now,
                     NumberPlate = vehicleServiceViewModel.NumberPlate,
@@ -94,17 +95,26 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.Vehicules == null)
+            if (id == null || _context.VehiculesDetails == null)
             {
                 return NotFound();
             }
 
-            var vehicles = await _context.Vehicules.FindAsync(id);
-            if (vehicles == null)
+            VehicleDetails vehiclesDetails = await _context.
+                VehiculesDetails.Include(c => c.Vehicles)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (vehiclesDetails == null)
             {
                 return NotFound();
             }
-            return View(vehicles);
+
+            EditDetailsVehicleView editDetailsVehicleView = new()
+            {
+                CreatedDate = vehiclesDetails.CreatedDate,
+                Id = vehiclesDetails.Id,
+                VehiclesId = vehiclesDetails.Vehicles.Id
+            };
+            return View(editDetailsVehicleView);
         }
 
         // POST: Vehicles/Edit/5
@@ -112,34 +122,39 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Owner,NumberPlate,Id,CreatedDate")] Vehicles vehicles)
+        public async Task<IActionResult> Edit(Guid id, EditDetailsVehicleView editDetailsVehicleView)
         {
-            if (id != vehicles.Id)
+            if (id != editDetailsVehicleView.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            VehicleDetails vehicleDetails = new()
             {
-                try
-                {
-                    _context.Update(vehicles);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VehiclesExists(vehicles.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                Id = id,
+                DeliveryDate = editDetailsVehicleView.DeliveryDate,
+                CreatedDate = editDetailsVehicleView.CreatedDate,
+                Vehicles = await _context.Vehicules.FirstOrDefaultAsync(m => m.Id == editDetailsVehicleView.VehiclesId)
+            };
+
+            try
+            {
+                _context.Update(vehicleDetails);
+                await _context.SaveChangesAsync();
             }
-            return View(vehicles);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!VehiclesExists(vehicleDetails.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Vehicles/Delete/5
@@ -174,14 +189,14 @@ namespace Parcial3_AriasRoldanNatalia.Controllers
             {
                 _context.Vehicules.Remove(vehicles);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool VehiclesExists(Guid id)
         {
-          return (_context.Vehicules?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Vehicules?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

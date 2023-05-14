@@ -1,25 +1,22 @@
-﻿@model IEnumerable<Parcial3_AriasRoldanNatalia.DAL.Entities.Vehicles>
+﻿@model IEnumerable<Parcial3_AriasRoldanNatalia.DAL.Entities.VehicleDetails>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Servicios en proceso</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Owner)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberPlate)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vehicles.Owner)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vehicles.NumberPlate)
             </th>
             <th></th>
         </tr>
@@ -28,18 +25,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Owner)
+                    @Html.DisplayFor(modelItem => item.DeliveryDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NumberPlate)
+                    @Html.DisplayFor(modelItem => item.Vehicles.Owner)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
+                    @Html.DisplayFor(modelItem => item.Vehicles.NumberPlate)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

@@ -10,7 +10,7 @@ namespace Parcial3_AriasRoldanNatalia.DAL.Entities
         public virtual Guid Id { get; set; }
 
         [Display(Name = "Fecha de creación")]
-        public virtual DateTime? CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         #endregion
     }
 
